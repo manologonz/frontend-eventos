@@ -1,0 +1,63 @@
+/*
+GLOBAL
+*/
+.login-cont {
+    margin-top: 25%;
+}
+
+.registro-cont {
+    margin-top: 6%;
+}
+
+/*
+NAVBAR
+ */
+.navigation {
+    display: flex;
+    background-color: white;
+    height: 80px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.navbar-logo {
+    width: 70px;
+    height: 70px;
+}
+
+.nav-options-container {
+}
+
+.user-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*
+TABS
+ */
+.tab-list {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.tab-list-item {
+    background-color: #b6b6b6;
+    display: inline-block;
+    width: 50%;
+    list-style: none;
+    margin-bottom: -1px;
+    padding: 0.5rem 0.75rem;
+}
+.tab-list-item:hover {
+    cursor: pointer;
+}
+
+.tab-list-active {
+    background-color: white;
+    border-width: 1px 1px 0 1px;
+}

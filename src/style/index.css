@@ -3,6 +3,7 @@
 @import "bootstrap.css";
 @import "bootstrap_reset.css";
 @import "../assets/fonts/fonts.css";
+@import "custom_styles.css";
 
 .container {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -137,4 +138,3 @@ body {
 /*Importando estilos para rc-tabs*/
 @import "../../node_modules/rc-tabs/assets/index.css";
 @import "rc-tabs.css";
-@import "custon_styles.css";
