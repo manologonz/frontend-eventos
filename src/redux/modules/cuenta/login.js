@@ -46,16 +46,26 @@ export const login = (data = {}) => (dispatch, getStore) => {
 };
 
 export const getMe = () => (dispatch) => {
-    api.get('/user/me').then(me => {
-        dispatch(initializeForm('profile', me));
-        dispatch(setMe(me));
-    })
-        .catch(() => {
+    const token = localStorage.getItem("token");
+    const authHeaders = {
+        headers: {
+            Authorization: `Token ${token}`
+        }
+    };
+    axios.get(`${base_url}/user/me`, authHeaders).then(response => {
+        dispatch(setMe(response.data));
+    }).catch(() => {
         }).finally(() => {});
 };
 
 export const logOut = () => (dispatch) => {
-    api.post('/user/logout').then(() => {
+    const token = localStorage.getItem("token");
+    const authHeaders = {
+        headers: {
+            Authorization: `Token ${token}`
+        }
+    };
+    axios.post('/user/logout',  authHeaders).then(() => {
     }).catch(() => {
     }).finally(() => {});
     localStorage.removeItem('token');

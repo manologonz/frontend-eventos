@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import Logo from "../../../../assets/img/sac-logo.png";
-import {Dropdown, DropdownItem} from "react-bootstrap";
-import DropdownToggle from "reactstrap/es/DropdownToggle";
-import DropdownMenu from "reactstrap/es/DropdownMenu";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link, NavLink} from "react-router-dom";
+import Menu from "../Menu/Menu";
 
 class NavBar extends Component {
     constructor(props) {
@@ -12,8 +11,8 @@ class NavBar extends Component {
     }
 
     isEmpty = (obj) => {
-        for(let key in obj) {
-            if(obj.hasOwnProperty(key))
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key))
                 return false;
         }
         return true;
@@ -24,19 +23,20 @@ class NavBar extends Component {
     };
 
     render() {
-        const { user } = this.props;
+        const {user, logOut} = this.props;
         return (
             <nav className="navigation">
                 <div className="logo-container col-md-1">
                     <img className="navbar-logo" alt="Logo" src={Logo}/>
                 </div>
-                <nav className="nav-options-container col-md-9 p-0">
-                </nav>
+                <div className="nav-options-container col-md-9 p-0">
+                    <Menu user={this.isEmpty(user) ? null : user}/>
+                </div>
                 <div className="user-container col-md-2">
                     {
                         (!this.isEmpty(user)) ? (
                             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                                <DropdownToggle color="white" caret className="nav-item-dropdown border-0">
+                                <DropdownToggle color="light" caret className="nav-item-dropdown border-0">
                                     <span className="d-none d-md-inline-block">{user.username}</span>
                                 </DropdownToggle>
                                 <DropdownMenu>
@@ -71,7 +71,7 @@ class NavBar extends Component {
                                     </DropdownItem>
                                     <DropdownItem divider/>
                                     <DropdownItem>
-                                        <a tabIndex="0" className="text-danger" href="/">
+                                        <a tabIndex="0" className="text-danger" onClick={logOut} href="/">
                                             <i className="material-icons text-danger"></i>
                                             Logout
                                         </a>

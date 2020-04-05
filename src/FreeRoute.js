@@ -6,6 +6,22 @@ import NavBar from "./js/components/layout/NavBar/NavBar";
 
 
 class FreeRouteBase extends Component {
+
+    isAuthenticated = () => {
+        const token = localStorage.getItem("token");
+        const { getMe, login: { me } } = this.props;
+        if (!!token && !!me.username) {
+            return true;
+        } else if(token) {
+            getMe();
+            return "Verifying"
+        }
+        return false;
+    };
+    componentDidMount() {
+        const isAuthenticated = this.isAuthenticated();
+    }
+
     render() {
         const {component: Component, logOut, login: {me}, ...rest} = this.props;
         return (
