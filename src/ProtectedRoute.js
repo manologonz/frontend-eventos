@@ -3,8 +3,8 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { logOut, getMe } from "./redux/modules/cuenta/login";
 
-import Navbar from "./js/components/layout/NavBar/NavBar";
-
+import NavBar from "./js/components/layout/NavBar/NavBar";
+import VerifyLogin from "./js/components/layout/VerifyLogin/VerifyLogin";
 
 class PrivateRouteBase extends Component {
     constructor(props) {
@@ -40,17 +40,11 @@ class PrivateRouteBase extends Component {
                 render={props =>
                     isAuthenticated ? (
                         (isAuthenticated === true) ? (<div>
-                            <SiderBar toggleOpen={this.state.toggleOpen} navToggle={this.navToggle} logOut={logOut} />
-                            <main className="main-content p-0 col-sm-12 col-md-9 offset-md-3 col-lg-10 offset-lg-2">
-                                <div className="main-navbar bg-white sticky-top">
-                                    <div className="p-0 container">
-                                        <Navbar navToggle={this.navToggle} logOut={logOut} user={me} />
-                                    </div>
-                                </div>
+                            <main className="">
+                                <NavBar navToggle={this.navToggle} logOut={logOut} user={me} />
                                 <div className="main-content-container px-4 container-fluid">
                                     <Component {...props} />
                                 </div>
-                                <Footer />
                             </main>
                         </div>) : (
                             <VerifyLogin />
@@ -71,11 +65,11 @@ class PrivateRouteBase extends Component {
 
 const mstp = state => ({ ...state });
 
-const mdtp = { logOut, getMe };
+const matp = { logOut, getMe };
 
 const ProtectedRoute = connect(
     mstp,
-    mdtp
+    matp
 )(PrivateRouteBase);
 
 export default ProtectedRoute;

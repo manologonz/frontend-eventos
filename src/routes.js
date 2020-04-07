@@ -9,8 +9,9 @@ import { NotificationContainer } from 'react-notifications';
 import Login from "./js/components/Login"
 import Default from "./js/components/Default/Default";
 import NotFound from './js/components/layout/NotFound/NotFound';
-import NavBar from "./js/components/layout/NavBar/NavBar";
 import FreeRoute from "./FreeRoute";
+import ProtectedRoute from "./ProtectedRoute";
+import CrearEventoContainer from "../src/js/components/Evento/Crear"
 require('./style/index.css');
 
 const Routes = (props) => (
@@ -19,7 +20,7 @@ const Routes = (props) => (
             <Switch>
                 <FreeRoute exact path="/" component={Default} {...props}/>
                 <Route exact path="/login" component={Login} />
-                {/*<Route exact path="/registro" component={Registro} />*/}
+                <ProtectedRoute exact path="/crear-evento" component={CrearEventoContainer} />
                 {/*<ProtectedRoute exact path="/" component={Demo} />*/}
                 <Route component={NotFound} />
             </Switch>

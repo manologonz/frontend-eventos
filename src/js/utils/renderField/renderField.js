@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import Creatable from 'react-select/creatable'
-import Async from 'react-select/async'
+import AsyncSelect from 'react-select/async'
 import NumberFormat from 'react-number-format';
 import classNames from 'classnames';
 import Switch from 'react-switch';
@@ -213,7 +213,7 @@ export const SelectField = (
 
     return (
         <React.Fragment>
-            <Select
+            <AsyncSelect
                 isClearable={isClearable}
                 className={classNames('react-select-container', { 'is-invalid': invalid })}
                 backspaceRemovesValue={false}
@@ -235,6 +235,7 @@ export const SelectField = (
 };
 
 
+
 export const AsyncSelectField = (
     {
         input,
@@ -243,14 +244,16 @@ export const AsyncSelectField = (
         isSearchable,
         loadOptions,
         placeholder,
+        onValueChange,
+        getOptionLabel,
+        getOptionValue,
         meta: { touched, error }
     }) => {
 
     const invalid = touched && error;
-
     return (
         <React.Fragment>
-            <Async
+            <AsyncSelect
                 isClearable={isClearable}
                 cacheOptions
                 className={classNames('react-select-container', { 'is-invalid': invalid })}
@@ -259,9 +262,15 @@ export const AsyncSelectField = (
                 defaultOptions
                 loadOptions={loadOptions}
                 placeholder={placeholder}
-                onChange={(e) => { input.onChange(e ? e : null); }}
+                onChange={(e) => {
+                    input.onChange(e ? e : null);
+                    if(!!onValueChange)
+                        onValueChange(e)
+                }}
                 value={input.value}
                 isDisabled={disabled}
+                getOptionLabel={getOptionLabel}
+                getOptionValue={getOptionValue}
             />
             {invalid && (
                 <div className="invalid-feedback">

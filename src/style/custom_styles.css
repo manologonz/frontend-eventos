@@ -1,6 +1,15 @@
 /*
 GLOBAL
 */
+.icon{
+    height: 25px;
+    width: 25px;
+}
+
+.icon:hover {
+    cursor: pointer;
+}
+
 .login-cont {
     margin-top: 25%;
 }
