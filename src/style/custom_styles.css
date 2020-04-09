@@ -1,13 +1,16 @@
 /*
 GLOBAL
 */
-.icon{
-    height: 25px;
-    width: 25px;
+.make-bold {
+    font-family: Barlow-Bold;
 }
 
-.icon:hover {
-    cursor: pointer;
+.make-regular {
+    font-family: Barlow-Regular;
+}
+
+.required-field {
+    color: red;
 }
 
 .login-cont {
@@ -59,6 +62,14 @@ NAVBAR
     justify-content: center;
     align-items: center;
 }
+
+/*
+BOTONES
+ */
+.btn-evento-height{
+    height: 50px;
+}
+
 /*
 TABS
  */
@@ -82,4 +93,26 @@ TABS
 .tab-list-active {
     background-color: white;
     border-width: 1px 1px 0 1px;
+}
+/*
+TABLAS
+ */
+.table-header th{
+    font-family: Barlow-Regular;
+    color: white;
+    text-align: center !important;
+    align-content: center;
+    padding: 3px !important
+}
+
+.table-body {
+    font-family: Barlow-Regular;
+    max-height: 300px;
+    min-height: 300px;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.table-body .react-bs-table-no-data {
+    border: none;
 }

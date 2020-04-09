@@ -17,9 +17,9 @@ export const withAuthHeaders = {
 };
 
 export const getCategorias = (search) => {
-    axios.get(`${base_url}/categoria/get_categorias?search=${search}`, withAuthHeaders).then(response => {
+    return axios.get(`${base_url}/categoria/get_categorias?search=${search}`, withAuthHeaders).then(response => {
         if (response.data) {
-            return response.data.map( cat => ({ value: cat.id, label: cat.nombre }));
+            return response.data
         }
         return [];
     }).catch((e) => {

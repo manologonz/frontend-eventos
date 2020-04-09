@@ -1,5 +1,7 @@
 import React,  {Component} from "react";
 import './FileUploader.css'
+import Uploaded from "../../../assets/img/uploaded.png"
+import Upload from "../../../assets/img/upload.png"
 
 const defaultProps = {
     baseColor: 'gray',
@@ -122,9 +124,9 @@ class FileUploader extends Component {
                 onDrop={this.onDrop}
                 style={{outlineColor: borderColor}}>
 
-                <img src={state.isImage ? state.imageSrc : require('../../../assets/img/uploaded.png')} className={state.loaded ? 'loaded' : undefined}/>
+                <img src={state.isImage ? state.imageSrc : Uploaded} className={state.loaded ? 'loaded' : undefined}/>
                 <img style={{ color: iconColor, opacity: hideIcon }} className="icon icon-upload"
-                     src={require(`../../../assets/img/upload.png`)} alt=""/>
+                     src={Upload} alt=""/>
                 <p className="texto gris text-center" style={{opacity:hideIcon}}>Subir Archivo</p>
                     <input disabled={this.props.disabled} type="file" accept="/*" onChange={this.onFileChange} ref="input" />
 
