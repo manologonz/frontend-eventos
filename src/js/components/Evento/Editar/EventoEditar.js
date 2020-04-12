@@ -1,32 +1,34 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types"
 import LoadMask from "../../../utils/LoadMask/LoadMask";
-import EventoForm from "./EventoForm";
+import EventoEditarForm from "./EventoEditarForm";
 import CategoriaFormModal from "../extra-components/CategoriaFormModal/CategoriaFormModal";
 import {NotificationManager} from "react-notifications";
 import _ from "lodash"
 
-class EventoCrear extends Component {
+class EventoEditar extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             imagen: null,
             open: false,
             count: 0,
-            talleres: {
-                results: []
-            }
         }
     }
 
+    componentDidMount() {
+        const {leer, match} = this.props
+        leer(match.params.id, true)
+    }
+
     static propTypes = {
-        crear: PropTypes.func.isRequired,
+        editar: PropTypes.func.isRequired,
     };
 
     handleEventoSubmit = (data) => {
-        const {crear} = this.props;
-        if(this.state.talleres.results <= 0){
-            NotificationManager.error('Debe crear al menos un taller', 'ERROR');
+        const {editar, match} = this.props;
+        if(this.props.talleres.results <= 0){
+            NotificationManager.error('Un evento debe tener al menos un taller', 'ERROR');
         } else {
             const body = {
                 evento: {
@@ -36,9 +38,9 @@ class EventoCrear extends Component {
                     categoria: data.categoria.id,
                     imagen_evento: null
                 },
-                talleres: this.state.talleres.results
+                talleres: this.props.talleres.results
             }
-            crear(body, [{"name": "imagen_evento", "value": this.state.imagen}])
+            editar(match.params.id, body, [{"name": "imagen_evento", "value": this.state.imagen}])
         }
     };
 
@@ -57,9 +59,9 @@ class EventoCrear extends Component {
     }
 
     handleTallerAgregar = () => {
-        const { changeFormValue } = this.props
+        const { changeFormValue, setTalleresValue } = this.props
+        const talleres = _.cloneDeep(this.props.talleres)
         const form = this.props.form.EventoForm
-        const talleres = _.cloneDeep(this.state.talleres)
         if(!!form && !!form.values){
             if(!form.values.nombre){
                 NotificationManager.error('Debe darle un nombre al taller', 'ERROR');
@@ -71,7 +73,8 @@ class EventoCrear extends Component {
                     nombre: form.values.nombre,
                     capacitador: form.values.capacitador
                 })
-                this.setState({talleres, count: this.state.count++})
+                this.setState({count: talleres.length + 1})
+                setTalleresValue(talleres)
             }
             changeFormValue("nombre", "")
             changeFormValue("capacitador", "")
@@ -81,10 +84,11 @@ class EventoCrear extends Component {
     }
 
     handleTallerDelete = (id) => {
-        const talleres = _.cloneDeep(this.state.talleres)
+        const { setTalleresValue } = this.props;
+        const talleres = _.cloneDeep(this.props.talleres)
         const index = _.indexOf(talleres.results, (taller) => (taller.id === id))
         talleres.results.splice(index, 1)
-        this.setState({talleres})
+        setTalleresValue(talleres)
     }
 
     setFile = (imagen) => {
@@ -92,12 +96,12 @@ class EventoCrear extends Component {
     };
 
     render() {
-        const { loader, imagen_evento } = this.props;
-        const { talleres, open } = this.state;
+        const { loader, imagen_evento, talleres } = this.props;
+        const { open } = this.state;
         return (
             <div className="main-section">
                 <LoadMask loading={loader}>
-                    <EventoForm
+                    <EventoEditarForm
                         talleres={talleres}
                         onAddCategoriaClick={this.openModal}
                         onTallerAgregar={this.handleTallerAgregar}
@@ -118,4 +122,4 @@ class EventoCrear extends Component {
     }
 }
 
-export default EventoCrear;
+export default EventoEditar;

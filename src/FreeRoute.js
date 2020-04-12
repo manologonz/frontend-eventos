@@ -30,7 +30,7 @@ class FreeRouteBase extends Component {
                 render={props =>
                     <main>
                         <NavBar navToggle={this.navToggle} logOut={logOut} user={me}/>
-                        <div className="main-content-container px-4 container-fluid">
+                        <div className="main-content-container pr-0 pl-0 container-fluid">
                             <Component {...props} />
                         </div>
                     </main>

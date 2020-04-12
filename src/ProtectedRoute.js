@@ -42,8 +42,8 @@ class PrivateRouteBase extends Component {
                         (isAuthenticated === true) ? (<div>
                             <main className="">
                                 <NavBar navToggle={this.navToggle} logOut={logOut} user={me} />
-                                <div className="main-content-container px-4 container-fluid">
-                                    <Component {...props} />
+                                <div className="main-content-container pr-0 pl-0 container-fluid">
+                                    <Component {...props} user={me}/>
                                 </div>
                             </main>
                         </div>) : (

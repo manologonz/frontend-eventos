@@ -1,27 +1,23 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 import {renderField, renderNumber, renderTextArea} from "../../../utils/renderField";
-import {validate, validators} from "validate-redux-form";
-import {AsyncSelectField, renderDateTimeField, renderFilePicker} from "../../../utils/renderField/renderField";
+import {validate, validators, combine} from "validate-redux-form";
+import {AsyncSelectField, renderDatePicker, renderFilePicker} from "../../../utils/renderField/renderField";
 import {getCategorias} from "../../../../utility/variables";
 import {TableHeaderColumn} from "react-bootstrap-table"
 import Grid from "../../../utils/Grid";
 import Add from "../../../../assets/img/action-icons/add-icon.png"
 import {tableHeader, tableBody} from "../../../../style/table-styles"
-import renderDatePicker from "../../../utils/DatePicker/DatePicker";
-import MomentInput from "react-moment-input"
-import moment from "moment";
 
-const EventoForm = (props) => {
+const EventoEditarForm = (props) => {
     const {handleSubmit, talleres, onTallerAgregar, onAddCategoriaClick, eliminarTaller, setFile,
         imagen_evento} = props;
     return (
-        <form name="EventoForm" className="form-validate mb-lg" onSubmit={handleSubmit}>
+        <form name="EventoEditarForm" className="form-validate mb-lg" onSubmit={handleSubmit}>
             <div className="d-flex p-3">
                 <div className="form-column mr-2">
                     <div className="col-md-12">
                         <h2>Información del evento</h2>
-                        <hr/>
                     </div>
                     <div className="col-md-12">
                         <label htmlFor="titulo">
@@ -89,11 +85,7 @@ const EventoForm = (props) => {
                             </label>
                             <Field
                                 name="fecha"
-                                className="form-control"
-                                component={renderDateTimeField}
-                                formatField={"DD-MM-YYYY"}
-                                options={true}
-                                readOnly={false}
+                                component={renderDatePicker}
                                 placeholder="¿En donde se va a realizar?"
                             />
                         </div>
@@ -105,10 +97,7 @@ const EventoForm = (props) => {
                             <Field
                                 name="hora"
                                 className="form-control"
-                                component={renderDateTimeField}
-                                formatField={"HH:mm"}
-                                options={true}
-                                readOnly={false}
+                                component={renderField}
                                 placeholder="¿En donde se va a realizar?"
                             />
                         </div>
@@ -220,7 +209,7 @@ const EventoForm = (props) => {
                         </Grid>
                     </div>
                     <div className="col-md-12 mt-4 make-bold">
-                        <button type="submit" className="btn btn-success btn-evento-height w-100">CREAR EVENTO</button>
+                        <button type="submit" className="btn btn-success btn-evento-height w-100">GUARDAR EVENTO</button>
                     </div>
                 </div>
             </div>
@@ -241,4 +230,4 @@ export default reduxForm({
             descripcion: validators.exists()('Este campo es requerido'),
         });
     },
-})(EventoForm);
+})(EventoEditarForm);

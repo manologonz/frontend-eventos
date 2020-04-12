@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { validate, validators } from 'validate-redux-form';
+import { validate, validators, combine } from 'validate-redux-form';
 import { renderField } from '../../utils/renderField';
 
 const RegistroForm = (props) => {
@@ -50,9 +50,14 @@ const RegistroForm = (props) => {
         </form>
     );
 };
+export const matchPassword = (pass, confirm) => validatorFromFunction(value => {
+    return pass === confirm;
+});
+
 
 export default reduxForm({
     form: 'registro', // a unique identifier for this form
+
     validate: (data) => {
         return validate(data, {
             username: validators.exists()('Este campo es requerido'),
@@ -60,7 +65,10 @@ export default reduxForm({
             last_name: validators.exists()('Este campo es requerido'),
             email: validators.exists()('Este campo es requerido'),
             password: validators.exists()('Este campo es requerido'),
-            confirm_password: validators.exists()('Este campo es requerido'),
+            confirmPassword: combine(
+                validators.exists()('Este campo es requerido'),
+                matchPassword(data.password, data.confirmPassword)()('Las contraseñas no coinciden')
+            ),
         });
     },
 })(RegistroForm);
