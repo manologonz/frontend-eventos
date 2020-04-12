@@ -1,38 +1,41 @@
-.login-overlay .panel-body{
-    min-height: 244px;
-}
-.has-feedback{
-    position: relative;
-}
-.form-control-feedback{
-    right: 10px;
-    left: auto;
-    top: 10px;
-    position: absolute;
-}
-.login-wrapper{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.card-login {
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-
-}
-.bienvenida{
-    color:white;
-    font-weight: bold;
-}
-.buttons-box{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.blue-gradient-bg{
+.login-background{
     height: 100vh;
-    background: #007bff;
-    background: linear-gradient(to right, #0062E6, #3ac1ff);
+    width: 100vw;
+    background-image: linear-gradient(to bottom, rgba(101, 102, 108, 0.52), rgba(0, 0, 0, 0.87)),
+    url("../../../assets/img/login-background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login-wrapper{
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    height: 80vh;:
+    min-height: 80vh;
+    display: flex;
+}
+
+.informacion-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-right: 1px solid gray;
+    width: 30%;
+}
+
+.header-info {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.form-container{
+    background-color: white;
+    width: 70%;
 }

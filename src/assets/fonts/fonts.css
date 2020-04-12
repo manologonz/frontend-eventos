@@ -4,3 +4,24 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Barlow-Regular";
+  src: url("Barlow-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Barlow-Bold";
+  src: url("Barlow-Bold.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Barlow-ExtraBold";
+  src: url("Barlow-ExtraBold.ttf");
+  font-weight: normal;
+  font-style: normal;
+}

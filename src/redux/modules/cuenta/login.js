@@ -3,6 +3,8 @@ import { push } from "react-router-redux";
 import { initialize as initializeForm } from 'redux-form';
 import { NotificationManager } from "react-notifications";
 import { api } from "../../../utility/api";
+import axios from "axios"
+import { base_url, requestHeaders } from "../../../utility/variables"
 
 const SUBMIT = 'LOGIN_SUBMIT';
 const LOADER = 'LOGIN_LOADER';
@@ -30,12 +32,11 @@ export const setMe = me => ({
 // Actions
 // ------------------------------------
 
-export const onSubmit = (data = {}) => (dispatch, getStore) => {
+export const login = (data = {}) => (dispatch, getStore) => {
     dispatch(setLoader(true));
-    api.post('user/token', data).then((response) => {
-        localStorage.setItem('token', response.token);
-        dispatch(initializeForm('profile', response.user));
-        dispatch(setMe(response.user));
+    axios.post(`${base_url}/user/login/`, data, requestHeaders).then(response => {
+        localStorage.setItem('token', response.data.token);
+        dispatch(setMe(response.data.user));
         dispatch(push("/"));
     }).catch(() => {
         NotificationManager.error('Credenciales incorrectas, vuelva a intentar', 'ERROR', 0);
@@ -45,16 +46,26 @@ export const onSubmit = (data = {}) => (dispatch, getStore) => {
 };
 
 export const getMe = () => (dispatch) => {
-    api.get('/user/me').then(me => {
-        dispatch(initializeForm('profile', me));
-        dispatch(setMe(me));
-    })
-        .catch(() => {
+    const token = localStorage.getItem("token");
+    const authHeaders = {
+        headers: {
+            Authorization: `Token ${token}`
+        }
+    };
+    axios.get(`${base_url}/user/me`, authHeaders).then(response => {
+        dispatch(setMe(response.data));
+    }).catch(() => {
         }).finally(() => {});
 };
 
 export const logOut = () => (dispatch) => {
-    api.post('/user/logout').then(() => {
+    const token = localStorage.getItem("token");
+    const authHeaders = {
+        headers: {
+            Authorization: `Token ${token}`
+        }
+    };
+    axios.post('/user/logout',  authHeaders).then(() => {
     }).catch(() => {
     }).finally(() => {});
     localStorage.removeItem('token');
@@ -62,7 +73,7 @@ export const logOut = () => (dispatch) => {
 
 
 export const actions = {
-    onSubmit,
+    login,
     logOut,
 };
 

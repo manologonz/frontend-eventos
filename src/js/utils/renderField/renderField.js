@@ -1,7 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
-import Creatable from 'react-select/creatable'
-import Async from 'react-select/async'
+import Select, {Creatable, Async} from 'react-select';
 import NumberFormat from 'react-number-format';
 import classNames from 'classnames';
 import Switch from 'react-switch';
@@ -9,7 +7,8 @@ import DayPicker from '../DayPicker';
 import FileUploader from '../FileUploader/FileUploader';
 import DatePicker from "react-date-picker";
 import _ from "lodash";
-
+import MomentInput from "react-moment-input"
+import moment from "moment";
 
 export const renderField = ({
                                 input, placeholder, type, meta: { touched, error },
@@ -213,7 +212,7 @@ export const SelectField = (
 
     return (
         <React.Fragment>
-            <Select
+            <AsyncSelect
                 isClearable={isClearable}
                 className={classNames('react-select-container', { 'is-invalid': invalid })}
                 backspaceRemovesValue={false}
@@ -235,6 +234,7 @@ export const SelectField = (
 };
 
 
+
 export const AsyncSelectField = (
     {
         input,
@@ -243,6 +243,9 @@ export const AsyncSelectField = (
         isSearchable,
         loadOptions,
         placeholder,
+        onValueChange,
+        getOptionLabel,
+        getOptionValue,
         meta: { touched, error }
     }) => {
 
@@ -259,9 +262,15 @@ export const AsyncSelectField = (
                 defaultOptions
                 loadOptions={loadOptions}
                 placeholder={placeholder}
-                onChange={(e) => { input.onChange(e ? e : null); }}
+                onChange={(e) => {
+                    input.onChange(e ? e : null);
+                    if(!!onValueChange)
+                        onValueChange(e)
+                }}
                 value={input.value}
                 isDisabled={disabled}
+                getOptionLabel={getOptionLabel}
+                getOptionValue={getOptionValue}
             />
             {invalid && (
                 <div className="invalid-feedback">
@@ -330,6 +339,7 @@ export const renderFilePicker = ({photo, setFile, className, disabled, input, me
         <div className={classNames(`${className}`, { 'is-invalid': invalid })}>
             <FileUploader
                 disabled={disabled}
+                className="form-control"
                 img= {!!photo ? photo : null}
                 onFileChange={(e, file) => {
                     file = file || e.target.files[0];
@@ -337,6 +347,7 @@ export const renderFilePicker = ({photo, setFile, className, disabled, input, me
                     reader.onload = (e) => {
                         input.onChange(reader.result);
                         if (!!setFile) {
+                            console.log(file);
                             setFile(file);
                         }
                     };
@@ -359,6 +370,29 @@ export const renderDayPicker = ({className, disabled, maxDate, minDate, input, m
                 minDate={minDate}
                 onChange={e => input.onChange(e)}
                 value={input.value}
+            />
+            {invalid && <div className="invalid-feedback">
+                {error}
+            </div>}
+        </div>
+    )
+};
+
+export const renderDateTimeField = ({className, icon, options, readOnly, formatField, disabled, maxDate, minDate, input, meta: { touched, error } }) => {
+    const invalid = touched && error;
+    return (
+        <div>
+            <MomentInput
+                inputClassName={classNames(`${className}`, { 'is-invalid': invalid })}
+                disabled={disabled}
+                readOnly={readOnly}
+                format={formatField }
+                max={maxDate}
+                min={minDate}
+                icon={icon}
+                options={options}
+                onChange={e => input.onChange(e)}
+                value={moment(input.value)}
             />
             {invalid && <div className="invalid-feedback">
                 {error}

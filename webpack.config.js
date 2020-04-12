@@ -19,6 +19,7 @@ module.exports = {
                             hash: 'sha512',
                             digest: 'hex',
                             name: "[hash].[ext]",
+                            outputPath: 'images'
                         }
                     },
                     {

@@ -1,5 +1,7 @@
 import React,  {Component} from "react";
 import './FileUploader.css'
+import Upload from "../../../assets/img/upload.png"
+import Uploaded from "../../../assets/img/uploaded.png"
 
 const defaultProps = {
     baseColor: 'gray',
@@ -28,17 +30,16 @@ class FileUploader extends Component {
         }
     }
 
-    componentDidMount(){
+    componentWillMount(){
         if (this.props.img !== null && this.props.img !== undefined){
             // setea la imágen si se le envia una
             this.setState({
                 imageSrc: this.props.img,
-                loaded: true,
-                isImage: true,
+                loaded: true
             });
         }
     }
-    getDerivedStateFromProps(nextProps){
+    componentWillReceiveProps(nextProps){
         if (nextProps.img !== null && nextProps.img !== undefined){
             // setea la imágen si se le envia una
             this.setState({
@@ -112,7 +113,7 @@ class FileUploader extends Component {
                     ? props.overlayColor
                     : props.baseColor,
             hideIcon = state.loaded ? 0 : 1;
-
+        const foto = this.props.img;
         return (
             <label
                 className={labelClass}
@@ -122,11 +123,12 @@ class FileUploader extends Component {
                 onDrop={this.onDrop}
                 style={{outlineColor: borderColor}}>
 
-                <img src={state.isImage ? state.imageSrc : require('../../../assets/img/uploaded.png')} className={state.loaded ? 'loaded' : undefined}/>
+                {(!!foto && !state.isImage) ? (<img src={foto} className={state.loaded ? 'loaded' : undefined}/>) :
+                    (<img src={state.isImage ? state.imageSrc : Uploaded} className={state.loaded ? 'loaded' : undefined}/>)}
                 <img style={{ color: iconColor, opacity: hideIcon }} className="icon icon-upload"
-                     src={require(`../../../assets/img/upload.png`)} alt=""/>
+                     src={Upload} alt=""/>
                 <p className="texto gris text-center" style={{opacity:hideIcon}}>Subir Archivo</p>
-                    <input disabled={this.props.disabled} type="file" accept="/*" onChange={this.onFileChange} ref="input" />
+                <input disabled={this.props.disabled} type="file" accept="/*" onChange={this.onFileChange} ref="input" />
 
             </label>
         );
