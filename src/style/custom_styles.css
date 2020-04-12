@@ -236,7 +236,7 @@ PAGINA PRINCIPAL
 .main-section{
     width:100%;
     height:100vh;
-    background:url("/src/assets/img/main-background.jpg");
+    background:url("../assets/img/main-background.jpg");
     background-size: cover;
 }
 

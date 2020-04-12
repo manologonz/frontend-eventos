@@ -71,10 +71,10 @@ class NavBar extends Component {
                                     </DropdownItem>
                                     <DropdownItem divider/>
                                     <DropdownItem>
-                                        <a tabIndex="0" className="text-danger" onClick={logOut} href="/">
+                                        <Link tabIndex="0" className="text-danger" onClick={logOut} to="/">
                                             <i className="material-icons text-danger"></i>
                                             Logout
-                                        </a>
+                                        </Link>
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>

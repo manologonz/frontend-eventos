@@ -18,6 +18,7 @@ import ListarEventosContainer from "./js/components/Evento/Listar"
 import UserEventsContainer from "./js/components/Evento/AdminEvents"
 import EventoEditarContainer from "./js/components/Evento/Editar"
 require('./style/index.css');
+import "./style/custom_styles.css"
 
 const Routes = (props) => (
     <div>
