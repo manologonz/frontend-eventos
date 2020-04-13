@@ -5,12 +5,15 @@ import EventoEditarForm from "./EventoEditarForm";
 import CategoriaFormModal from "../extra-components/CategoriaFormModal/CategoriaFormModal";
 import {NotificationManager} from "react-notifications";
 import _ from "lodash"
+import TallerForm from "../../Taller/Editar/TallerForm";
+import {crearTaller, eliminarTaller} from "../../../../redux/modules/eventos/eventos";
 
 class EventoEditar extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
             imagen: null,
+            eliminar: [],
             open: false,
             count: 0,
         }
@@ -26,21 +29,16 @@ class EventoEditar extends Component {
     };
 
     handleEventoSubmit = (data) => {
-        const {editar, match} = this.props;
+        const {editarEvento, match} = this.props;
         if(this.props.talleres.results <= 0){
             NotificationManager.error('Un evento debe tener al menos un taller', 'ERROR');
         } else {
             const body = {
-                evento: {
-                    ...data,
-                    fecha: data.fecha.format("YYYY-MM-DD"),
-                    hora: data.hora.format("HH:mm:ss"),
-                    categoria: data.categoria.id,
-                    imagen_evento: null
-                },
-                talleres: this.props.talleres.results
+                ...data,
+                categoria: (!!data.categoria) ? data.categoria.id : null,
+                imagen_evento: null
             }
-            editar(match.params.id, body, [{"name": "imagen_evento", "value": this.state.imagen}])
+            editarEvento(match.params.id, body, [{"name": "imagen_evento", "value": this.state.imagen}])
         }
     };
 
@@ -58,37 +56,19 @@ class EventoEditar extends Component {
         this.setState({open: true})
     }
 
-    handleTallerAgregar = () => {
-        const { changeFormValue, setTalleresValue } = this.props
-        const talleres = _.cloneDeep(this.props.talleres)
-        const form = this.props.form.EventoForm
-        if(!!form && !!form.values){
-            if(!form.values.nombre){
-                NotificationManager.error('Debe darle un nombre al taller', 'ERROR');
-            } else if(!form.values.capacitador){
-                NotificationManager.error('Debe ingresar un capacitador', 'ERROR');
-            } else {
-                talleres.results.push({
-                    id: this.state.count,
-                    nombre: form.values.nombre,
-                    capacitador: form.values.capacitador
-                })
-                this.setState({count: talleres.length + 1})
-                setTalleresValue(talleres)
-            }
-            changeFormValue("nombre", "")
-            changeFormValue("capacitador", "")
-        } else {
-            NotificationManager.error(`Debe ingresar un taller y un capacitador`, 'ERROR');
-        }
+    handleTallerSubmit = (data) => {
+        const { crearTaller, match } = this.props
+        crearTaller(match.params.id, data)
     }
 
     handleTallerDelete = (id) => {
-        const { setTalleresValue } = this.props;
-        const talleres = _.cloneDeep(this.props.talleres)
-        const index = _.indexOf(talleres.results, (taller) => (taller.id === id))
-        talleres.results.splice(index, 1)
-        setTalleresValue(talleres)
+        const { eliminarTaller, match } = this.props;
+        eliminarTaller(match.params.id, id)
+    }
+
+    handleEliminarEvento = () => {
+        const { eliminar, match } = this.props
+        eliminar(match.params.id)
     }
 
     setFile = (imagen) => {
@@ -96,20 +76,27 @@ class EventoEditar extends Component {
     };
 
     render() {
-        const { loader, imagen_evento, talleres } = this.props;
+        const { loader, imagen_evento, talleres, eliminar } = this.props;
         const { open } = this.state;
         return (
             <div className="main-section">
-                <LoadMask loading={loader}>
-                    <EventoEditarForm
-                        talleres={talleres}
-                        onAddCategoriaClick={this.openModal}
-                        onTallerAgregar={this.handleTallerAgregar}
-                        eliminarTaller={this.handleTallerDelete}
-                        setFile={this.setFile}
-                        imagen_evento={imagen_evento}
-                        onSubmit={this.handleEventoSubmit}
-                    />
+                <LoadMask loading={loader} type={"ThreeDots"} blur>
+                    <div className="d-flex p-3">
+                        <EventoEditarForm
+                            onAddCategoriaClick={this.openModal}
+                            setFile={this.setFile}
+                            imagen_evento={imagen_evento}
+                            onSubmit={this.handleEventoSubmit}
+                        />
+                        <TallerForm
+                            talleres={talleres}
+                            eliminar={this.handleEliminarEvento}
+                            onTallerAgregar={this.handleTallerAgregar}
+                            eliminarTaller={this.handleTallerDelete}
+                            onSubmit={this.handleTallerSubmit}
+                        />
+                    </div>
+
                 </LoadMask>
                 <CategoriaFormModal
                     isOpen={open}

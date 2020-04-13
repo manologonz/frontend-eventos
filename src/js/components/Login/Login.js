@@ -14,11 +14,15 @@ class Login extends Component {
         registrar: PropTypes.func.isRequired,
     };
 
-    callback = () => {};
+    hanldeRegistrar = (data) => {
+        const {loadFormData, registrar} = this.props
+        registrar(data)
+        loadFormData({})
+    }
+
 
     render() {
-        console.log(this.props);
-        const { login, registrar, loginState, registrarState } = this.props;
+        const { login, loginState, registrarState } = this.props;
         const { loader: loginLoader } = loginState;
         const { loader: registrarLoader } = registrarState;
         if (localStorage.getItem('token')) {
@@ -35,15 +39,15 @@ class Login extends Component {
                             <Tabs>
                                 <div label="LOGIN">
                                     <div className="col-md-9 login-cont">
-                                        <LoadMask loading={loginLoader}>
+                                        <LoadMask loading={loginLoader} type={"ThreeDots"} blur>
                                             <LoginForm onSubmit={login}/>
                                         </LoadMask>
                                     </div>
                                 </div>
                                 <div label="REGISTRO">
                                     <div className="col-md-9 registro-cont">
-                                        <LoadMask loading={registrarLoader}>
-                                            <RegistroForm onSubmit={registrar}/>
+                                        <LoadMask loading={registrarLoader} type={"ThreeDots"} blur>
+                                            <RegistroForm onSubmit={this.hanldeRegistrar}/>
                                         </LoadMask>
                                     </div>
                                 </div>

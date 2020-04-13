@@ -11,13 +11,14 @@ import MomentInput from "react-moment-input"
 import moment from "moment";
 
 export const renderField = ({
-                                input, placeholder, type, meta: { touched, error },
+                                input, placeholder, disabled, type, meta: { touched, error },
                             }) => {
     const invalid = touched && error;
     return (
         <div>
             <input
                 {...input}
+                disabled={disabled}
                 placeholder={placeholder}
                 type={type}
                 className={classNames('form-control', { 'is-invalid': invalid })}
@@ -347,7 +348,6 @@ export const renderFilePicker = ({photo, setFile, className, disabled, input, me
                     reader.onload = (e) => {
                         input.onChange(reader.result);
                         if (!!setFile) {
-                            console.log(file);
                             setFile(file);
                         }
                     };
@@ -365,6 +365,7 @@ export const renderDayPicker = ({className, disabled, maxDate, minDate, input, m
     return (
         <div className={classNames(`${className}`, { 'is-invalid': invalid })}>
             <DayPicker
+                className={classNames(`${className}`, { 'is-invalid': invalid })}
                 disabled={disabled}
                 maxDate={maxDate}
                 minDate={minDate}

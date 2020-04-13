@@ -5,6 +5,7 @@ import renderDatePicker from "../../../utils/DatePicker/DatePicker";
 import {AsyncSelectField} from "../../../utils/renderField/renderField";
 import {getCategorias} from "../../../../utility/variables";
 import AllEventosList from "./AllEventosList";
+import LoadMask from "../../../utils/LoadMask/LoadMask";
 
 class EventoListar extends Component {
     constructor(props, context) {
@@ -78,9 +79,8 @@ class EventoListar extends Component {
     }
 
     render() {
-        const {data, page, count} = this.props
+        const {data, page, count, loader} = this.props
         const { usingFilters } = this.state
-        console.log(this.state)
         return (
             <div className="main-section p-3">
                 <div className="col-md-12 eventos-list-container">
@@ -135,7 +135,9 @@ class EventoListar extends Component {
                             <p>Listado de eventos</p>
                             <p className="mr-4">resultados: {(data.results.length > 0) ? data.count : 0}</p>
                         </div>
-                        <AllEventosList count={count} eventos={data} page={page} onPageChange={this.onPageChange}/>
+                        <LoadMask loading={loader} type={"ThreeDots"} blur>
+                            <AllEventosList count={count} eventos={data} page={page} onPageChange={this.onPageChange}/>
+                        </LoadMask>
                     </div>
                 </div>
 

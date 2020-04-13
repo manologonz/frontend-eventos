@@ -31,9 +31,7 @@ class EventoCrear extends Component {
             const body = {
                 evento: {
                     ...data,
-                    fecha: data.fecha.format("YYYY-MM-DD"),
-                    hora: data.hora.format("HH:mm:ss"),
-                    categoria: data.categoria.id,
+                    categoria: (data.categoria) ? (data.categoria.id) : null,
                     imagen_evento: null
                 },
                 talleres: this.state.talleres.results
@@ -96,7 +94,7 @@ class EventoCrear extends Component {
         const { talleres, open } = this.state;
         return (
             <div className="main-section">
-                <LoadMask loading={loader}>
+                <LoadMask loading={loader} type={"ThreeDots"} blur>
                     <EventoForm
                         talleres={talleres}
                         onAddCategoriaClick={this.openModal}

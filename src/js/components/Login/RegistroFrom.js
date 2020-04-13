@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { validate, validators, combine } from 'validate-redux-form';
+import { validate, validators, combine, validatorFromFunction } from 'validate-redux-form';
 import { renderField } from '../../utils/renderField';
 
 const RegistroForm = (props) => {

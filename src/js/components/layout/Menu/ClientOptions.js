@@ -5,10 +5,34 @@ const ClientOptions = () => {
     return (
         <ul className="nav-list">
             <li className="nav-item">
-                <NavLink to="/" className="nav-inside-link" activeClassName={"active-inside-link"}>Inicio</NavLink>
+                <NavLink
+                    className="navigation-link"
+                    exact
+                    activeClassName={"navigation-link-selected"}
+                    to="/"
+                >
+                    Inicio
+                </NavLink>
             </li>
             <li className="nav-item">
-                <NavLink to="/eventos">Mis Eventos</NavLink>
+                <NavLink
+                    className="navigation-link"
+                    exact
+                    activeClassName={"navigation-link-selected"}
+                    to="/eventos-list"
+                >
+                    EVENTOS
+                </NavLink>
+            </li>
+            <li className="nav-item">
+                <NavLink
+                    className="navigation-link"
+                    exact
+                    activeClassName={"navigation-link-selected"}
+                    to="/eventos-agregados"
+                >
+                    EVENTOS AGREGADOS
+                </NavLink>
             </li>
         </ul>
     );

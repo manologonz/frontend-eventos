@@ -16,15 +16,11 @@ class Inicio extends Component {
                     <div className="content">
                         <h1>Eventos y Capacitaciones</h1>
                         <p>
-                            No te pierdas ni un minuto del mágico concierto en línea con canciones de reconocidas
-                            películas Disney.
-                            Estará a cargo de los talentosos miembros del Coro Nacional de Guatemala.
-                            Lo que podrás ver desde tu casa será una grabación de unos de los conciertos que el Coro
-                            Nacional ha brindado.
-                            Los mismos han tenido lugar en la Gran Sala Efraín Recinos del Centro Cultural Miguel Ángel
-                            Asturias.
-                            ¡Muchos guatemaltecos han tenido la oportunidad de disfrutarlos y ahora aún más!
-
+                            Bienvenido a SAC, Sistema de Administración de Capacitaciones, para nosotros el aprender
+                            nuevas habilidades es algo importante que define el éxito de una persona, por esa misma
+                            razón es que SAC existe, para brindar un servicio en el cual puedas estar al tanto de todas
+                            las actividades de aprendizaje y superación personal que estan disponibles en todo el país,
+                            ven y aprendamos juntos
                         </p>
                     </div>
                 </div>
