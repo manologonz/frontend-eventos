@@ -31,9 +31,7 @@ class EventoCrear extends Component {
             const body = {
                 evento: {
                     ...data,
-                    fecha: data.fecha.format("YYYY-MM-DD"),
-                    hora: data.hora.format("HH:mm:ss"),
-                    categoria: data.categoria.id,
+                    categoria: (data.categoria) ? (data.categoria.id) : null,
                     imagen_evento: null
                 },
                 talleres: this.state.talleres.results
@@ -71,7 +69,8 @@ class EventoCrear extends Component {
                     nombre: form.values.nombre,
                     capacitador: form.values.capacitador
                 })
-                this.setState({talleres, count: this.state.count++})
+                const count = this.state.count + 1 ;
+                this.setState({talleres, count})
             }
             changeFormValue("nombre", "")
             changeFormValue("capacitador", "")
@@ -82,8 +81,13 @@ class EventoCrear extends Component {
 
     handleTallerDelete = (id) => {
         const talleres = _.cloneDeep(this.state.talleres)
-        const index = _.indexOf(talleres.results, (taller) => (taller.id === id))
-        talleres.results.splice(index, 1)
+        let index = -1
+        for(let i = 0; i < talleres.results.length; i ++){
+            if(talleres.results[i].id === id){
+                talleres.results.splice(i, 1)
+                break
+            }
+        }
         this.setState({talleres})
     }
 
@@ -96,7 +100,7 @@ class EventoCrear extends Component {
         const { talleres, open } = this.state;
         return (
             <div className="main-section">
-                <LoadMask loading={loader}>
+                <LoadMask loading={loader} type={"ThreeDots"} blur>
                     <EventoForm
                         talleres={talleres}
                         onAddCategoriaClick={this.openModal}

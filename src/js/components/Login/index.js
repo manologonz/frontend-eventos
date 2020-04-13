@@ -3,7 +3,7 @@ import { actions as loginActions } from '../../../redux/modules/cuenta/login';
 import { actions as registrarActions } from '../../../redux/modules/cuenta/registrar';
 import Login from './Login';
 
-const { registrar } = registrarActions;
+const { registrar, loadFormData } = registrarActions;
 const { login } = loginActions;
 
 const ms2p = (state) => {
@@ -14,6 +14,6 @@ const ms2p = (state) => {
     };
 };
 
-const md2p = { registrar, login };
+const md2p = { registrar, login, loadFormData };
 
 export default connect(ms2p, md2p)(Login);

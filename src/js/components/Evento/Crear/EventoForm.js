@@ -1,16 +1,18 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 import {renderField, renderNumber, renderTextArea} from "../../../utils/renderField";
-import {validate, validators} from "validate-redux-form";
-import {AsyncSelectField, renderDateTimeField, renderFilePicker} from "../../../utils/renderField/renderField";
+import {combine, validate, validatorFromFunction, validators} from "validate-redux-form";
+import {
+    AsyncSelectField,
+    renderDayPicker,
+    renderFilePicker
+} from "../../../utils/renderField/renderField";
 import {getCategorias} from "../../../../utility/variables";
 import {TableHeaderColumn} from "react-bootstrap-table"
 import Grid from "../../../utils/Grid";
 import Add from "../../../../assets/img/action-icons/add-icon.png"
 import {tableHeader, tableBody} from "../../../../style/table-styles"
-import renderDatePicker from "../../../utils/DatePicker/DatePicker";
-import MomentInput from "react-moment-input"
-import moment from "moment";
+
 
 const EventoForm = (props) => {
     const {handleSubmit, talleres, onTallerAgregar, onAddCategoriaClick, eliminarTaller, setFile,
@@ -31,29 +33,29 @@ const EventoForm = (props) => {
                             name="titulo"
                             component={renderField}
                             type="text"
-                            placeholder="¿Como se llama tu evento?"/>
+                            placeholder="¿Cómo se llama tu evento?"/>
                     </div>
                     <div className="col-md-12 d-flex mt-3">
                         <div className="col-md-6 pl-0">
                             <label htmlFor="limite_participantes_evento" className="m-0 pr-2">
-                                Limite participantes<span className="required-field">*</span>
+                                Límite participantes<span className="required-field">*</span>
                             </label>
                             <Field
                                 name="limite_participantes_evento"
                                 component={renderNumber}
                                 type="number"
-                                placeholder="¿Cuantas personas pueden asistir?"
+                                placeholder="¿Cuántas personas pueden asistir?"
                             />
                         </div>
                         <div className="col-md-6 pr-0">
                             <label htmlFor="limite_participantes_talleres" className="m-0 pr-2">
-                                Limite talleres<span className="required-field">*</span>
+                                Límite talleres<span className="required-field">*</span>
                             </label>
                             <Field
                                 name="limite_participantes_talleres"
                                 component={renderNumber}
                                 type="number"
-                                placeholder="¿Cuantos talleres se pueden asignar?"
+                                placeholder="¿Cuántos talleres se pueden asignar?"
                             />
                         </div>
                     </div>
@@ -67,7 +69,7 @@ const EventoForm = (props) => {
                                 isClearable={true}
                                 component={AsyncSelectField}
                                 loadOptions={getCategorias}
-                                placeholder="¿Cual es la tematica?"
+                                placeholder="¿Cuál es la temática?"
                                 getOptionLabel={(option) => (option["nombre"])}
                                 getOptionValue={(option) => (option["id"])}
                             />
@@ -85,16 +87,11 @@ const EventoForm = (props) => {
                         <div className="col-md-6 pl-0">
                             <label htmlFor="fecha">
                                 Fecha<span className="required-field">*</span>
-                                <small className="make-regular"> (DD-MM-YYYY)</small>
                             </label>
                             <Field
                                 name="fecha"
-                                className="form-control"
-                                component={renderDateTimeField}
-                                formatField={"DD-MM-YYYY"}
-                                options={true}
-                                readOnly={false}
-                                placeholder="¿En donde se va a realizar?"
+                                component={renderDayPicker}
+                                placeholder="¿En dónde se va a realizar?"
                             />
                         </div>
                         <div className="col-md-6 pr-0">
@@ -104,12 +101,8 @@ const EventoForm = (props) => {
                             </label>
                             <Field
                                 name="hora"
-                                className="form-control"
-                                component={renderDateTimeField}
-                                formatField={"HH:mm"}
-                                options={true}
-                                readOnly={false}
-                                placeholder="¿En donde se va a realizar?"
+                                component={renderField}
+                                placeholder="HH:mm (24hrs)"
                             />
                         </div>
                     </div>
@@ -134,7 +127,7 @@ const EventoForm = (props) => {
                             name="descripcion"
                             component={renderTextArea}
                             type="text"
-                            placeholder="Cuentanos un poco sobre la dinamica del evento."
+                            placeholder="Cuéntanos un poco sobre la dinámica del evento."
                         />
                     </div>
                     <div className="col-md-12 mt-3">
@@ -160,7 +153,7 @@ const EventoForm = (props) => {
                             name="nombre"
                             component={renderField}
                             type="text"
-                            placeholder="¿Sobre que trata el taller?"
+                            placeholder="¿Sobre qué trata el taller?"
                         />
                     </div>
                     <div className="col-md-12 mt-3">
@@ -171,7 +164,7 @@ const EventoForm = (props) => {
                             name="capacitador"
                             component={renderField}
                             type="text"
-                            placeholder="¿Quien impartira el taller?"
+                            placeholder="¿Quién impartirá el taller?"
                         />
                     </div>
                     <div className="col-md-12 mt-3">
@@ -228,6 +221,10 @@ const EventoForm = (props) => {
     );
 };
 
+export const validHour = (hora) => validatorFromFunction(value => {
+    return hora.match(/^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/);
+});
+
 export default reduxForm({
     form: 'EventoForm', // a unique identifier for this form
     validate: (data) => {
@@ -236,7 +233,10 @@ export default reduxForm({
             limite_participantes_evento: validators.exists()('Este campo es requerido'),
             limite_participantes_talleres: validators.exists()('Este campo es requerido'),
             fecha: validators.exists()('Este campo es requerido'),
-            hora: validators.exists()('Este campo es requerido'),
+            hora: combine(
+                validators.exists()('Este campo es requerido'),
+                validHour(data.hora)()('Ingrese un formato valido')
+            ),
             lugar: validators.exists()('Este campo es requerido'),
             descripcion: validators.exists()('Este campo es requerido'),
         });

@@ -1,8 +1,7 @@
 import React from "react";
 import axios from "axios"
 import moment from "moment";
-export const base_url = "http://127.0.0.1:8000";
-
+export const base_url = "https://eventosumgcapacitacion.herokuapp.com";
 const dataTypes = {
     json: "application/json",
     multipart: "multipart/form-data"

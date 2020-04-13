@@ -1,24 +1,27 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 import {renderField, renderNumber, renderTextArea} from "../../../utils/renderField";
-import {validate, validators, combine} from "validate-redux-form";
-import {AsyncSelectField, renderDatePicker, renderFilePicker} from "../../../utils/renderField/renderField";
+import {validate, validators, combine, validatorFromFunction} from "validate-redux-form";
+import {
+    AsyncSelectField,
+    renderDayPicker,
+    renderFilePicker
+} from "../../../utils/renderField/renderField";
 import {getCategorias} from "../../../../utility/variables";
-import {TableHeaderColumn} from "react-bootstrap-table"
-import Grid from "../../../utils/Grid";
 import Add from "../../../../assets/img/action-icons/add-icon.png"
-import {tableHeader, tableBody} from "../../../../style/table-styles"
+
 
 const EventoEditarForm = (props) => {
-    const {handleSubmit, talleres, onTallerAgregar, onAddCategoriaClick, eliminarTaller, setFile,
+    const {handleSubmit, onAddCategoriaClick, setFile,
         imagen_evento} = props;
     return (
-        <form name="EventoEditarForm" className="form-validate mb-lg" onSubmit={handleSubmit}>
-            <div className="d-flex p-3">
-                <div className="form-column mr-2">
-                    <div className="col-md-12">
+        <form name="EventoEditarForm" className="form-column mr-2 form-validate mb-lg" onSubmit={handleSubmit}>
+                <div>
+                    <div className="col-md-12 d-flex justify-content-between">
                         <h2>Información del evento</h2>
+                        <input type="submit" className="btn btn-success make-bold" value="GUARDAR CAMBIOS"/>
                     </div>
+                    <hr/>
                     <div className="col-md-12">
                         <label htmlFor="titulo">
                             Nombre del evento<span className="required-field">*</span>
@@ -85,7 +88,7 @@ const EventoEditarForm = (props) => {
                             </label>
                             <Field
                                 name="fecha"
-                                component={renderDatePicker}
+                                component={renderDayPicker}
                                 placeholder="¿En donde se va a realizar?"
                             />
                         </div>
@@ -136,86 +139,13 @@ const EventoEditarForm = (props) => {
                         />
                     </div>
                 </div>
-                <div className="form-column ml-2">
-                    <div className="col-md-12">
-                        <h2>Administración de talleres</h2>
-                        <hr/>
-                    </div>
-                    <div className="col-md-12">
-                        <label htmlFor="nombre">
-                            Nombre del taller<span className="required-field">*</span>
-                        </label>
-                        <Field
-                            name="nombre"
-                            component={renderField}
-                            type="text"
-                            placeholder="¿Sobre que trata el taller?"
-                        />
-                    </div>
-                    <div className="col-md-12 mt-3">
-                        <label htmlFor="capacitador">
-                            Capacitador<span className="required-field">*</span>
-                        </label>
-                        <Field
-                            name="capacitador"
-                            component={renderField}
-                            type="text"
-                            placeholder="¿Quien impartira el taller?"
-                        />
-                    </div>
-                    <div className="col-md-12 mt-3">
-                        <button
-                            onClick={onTallerAgregar} type="button" className="btn btn-info w-100 make-bold">
-                            AGREGAR TALLER
-                        </button>
-                    </div>
-                    <div className="col-md-12 mt-3">
-                        <Grid
-                            data={talleres}
-                            pagination={false}
-                            tableHeaderClass="table-header"
-                            bodyContainerClass="table-body"
-                            headerStyle={tableHeader}
-                            bodyStyle={tableBody}
-                        >
-                            <TableHeaderColumn
-                                width='20%'
-                                dataField="id"
-                                dataFormat={(cell) => (
-                                    <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-                                        <a
-                                            className="px-2"
-                                            style={{cursor: "pointer", color: "#c4183c"}}
-                                            onClick={() => {eliminarTaller(cell)}}
-                                        >
-                                            <i className="material-icons">delete</i>
-                                        </a>
-                                    </div>
-                                )}
-                            >
-                                ACCIONES
-                            </TableHeaderColumn>
-                            <TableHeaderColumn
-                                isKey
-                                dataField="nombre"
-                            >
-                                TALLER
-                            </TableHeaderColumn>
-                            <TableHeaderColumn
-                                dataField="capacitador"
-                            >
-                                CAPACITADOR
-                            </TableHeaderColumn>
-                        </Grid>
-                    </div>
-                    <div className="col-md-12 mt-4 make-bold">
-                        <button type="submit" className="btn btn-success btn-evento-height w-100">GUARDAR EVENTO</button>
-                    </div>
-                </div>
-            </div>
         </form>
     );
 };
+
+export const validHour = (hora) => validatorFromFunction(value => {
+    return hora.match(/^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/);
+});
 
 export default reduxForm({
     form: 'EventoForm', // a unique identifier for this form
@@ -225,7 +155,10 @@ export default reduxForm({
             limite_participantes_evento: validators.exists()('Este campo es requerido'),
             limite_participantes_talleres: validators.exists()('Este campo es requerido'),
             fecha: validators.exists()('Este campo es requerido'),
-            hora: validators.exists()('Este campo es requerido'),
+            hora: combine(
+                validators.exists()('Este campo es requerido'),
+                validHour(data.hora)()('Ingrese un formato valido')
+            ),
             lugar: validators.exists()('Este campo es requerido'),
             descripcion: validators.exists()('Este campo es requerido'),
         });

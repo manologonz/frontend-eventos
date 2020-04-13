@@ -1,10 +1,8 @@
 import { handleActions } from 'redux-actions';
 import { push } from "react-router-redux";
-import { initialize as initializeForm } from 'redux-form';
 import { NotificationManager } from "react-notifications";
-import { api } from "../../../utility/api";
 import axios from "axios"
-import { base_url, requestHeaders } from "../../../utility/variables"
+import { base_url, getRequestHeaders } from "../../../utility/variables"
 
 const SUBMIT = 'LOGIN_SUBMIT';
 const LOADER = 'LOGIN_LOADER';
@@ -34,7 +32,10 @@ export const setMe = me => ({
 
 export const login = (data = {}) => (dispatch, getStore) => {
     dispatch(setLoader(true));
-    axios.post(`${base_url}/user/login/`, data, requestHeaders).then(response => {
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/user/login/`, data, config).then(response => {
         localStorage.setItem('token', response.data.token);
         dispatch(setMe(response.data.user));
         dispatch(push("/"));
@@ -59,13 +60,11 @@ export const getMe = () => (dispatch) => {
 };
 
 export const logOut = () => (dispatch) => {
-    const token = localStorage.getItem("token");
-    const authHeaders = {
-        headers: {
-            Authorization: `Token ${token}`
-        }
+    const config = {
+        headers: getRequestHeaders()
     };
-    axios.post('/user/logout',  authHeaders).then(() => {
+    axios.post(`${base_url}/user/logout/`,{}, config).then(() => {
+        dispatch(setMe({}))
     }).catch(() => {
     }).finally(() => {});
     localStorage.removeItem('token');

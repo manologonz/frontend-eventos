@@ -4,7 +4,7 @@ import { validate, validators } from 'validate-redux-form';
 import { renderField } from '../../utils/renderField';
 
 const LoginForm = (props) => {
-    const { handleSubmit, pristine, reset, submitting } = props;
+    const { handleSubmit, pristine, reset, submitting, } = props;
     return (
         <form name="loginForm" className="form-validate mb-lg" onSubmit={handleSubmit}>
             <div className="form-group has-feedback">

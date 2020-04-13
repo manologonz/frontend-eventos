@@ -1,8 +1,8 @@
 import { handleActions } from 'redux-actions';
-import { push } from "react-router-redux";
 import { NotificationManager } from "react-notifications";
 import axios from "axios"
 import {base_url} from "../../../utility/variables";
+import {initialize as initializeForm} from "redux-form";
 
 const SUBMIT = 'REGISTER_SUBMIT';
 const LOADER = 'REGISTER_LOADER';
@@ -24,9 +24,14 @@ export const setLoader = loader => ({
 // Actions
 // ------------------------------------
 
+export const loadFormData = (data) => (dispatch) => {
+    dispatch(initializeForm("registro", data))
+}
+
 export const registrar = (data = {}) => (dispatch) => {
     dispatch(setLoader(true));
     axios.post(`${base_url}/user/`, data).then(() => {
+        dispatch(initializeForm("registro", {}))
         NotificationManager.success('Cuenta creada con éxito, puedes iniciar sesión', 'Éxito', 3000);
     }).catch(() => {
         NotificationManager.error('Vuelva a intentar', 'ERROR', 0);
@@ -43,6 +48,7 @@ export const logOut = () => (dispatch) => {
 export const actions = {
     registrar,
     logOut,
+    loadFormData,
 };
 
 export const reducers = {

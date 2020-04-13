@@ -6,7 +6,6 @@ import EventoCard from "../Evento/extra-components/EventoCard/EventoCard";
 
 const MainViewEventosList = (props) => {
     const {eventos, page} = props;
-    console.log("LISTA EVENTOS", eventos);
     return (
         <div className="h-100">
             <div className="event-container">

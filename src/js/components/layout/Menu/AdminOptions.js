@@ -27,15 +27,6 @@ const AdminOptions = () => {
                     className="navigation-link"
                     exact
                     activeClassName={"navigation-link-selected"}
-                    to="/eventos-list">
-                    Eventos
-                </NavLink>
-            </li>
-            <li className="nav-item">
-                <NavLink
-                    className="navigation-link"
-                    exact
-                    activeClassName={"navigation-link-selected"}
                     to="/mis-eventos">
                     Mis Eventos
                 </NavLink>

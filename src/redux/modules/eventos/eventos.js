@@ -26,6 +26,9 @@ const constants = {
     SEARCH: "EVENTOS_SEARCH",
     EVENTOS_HOY: "EVENTOS_HOY_LIST",
     TALLERES: "EVENTOS_TALLERES_LIST",
+    USER_TALLERES: "EVENTOS_USER_TALLERES_LIST",
+    USER_EVENTOS: "EVENTOS_USER_EVENTOS_LIST",
+    INSCRITO_EVENTOS: "EVENTOS_INSCRITO_EVENTOS_LIST",
 };
 
 // -----------------------------------
@@ -40,6 +43,21 @@ const setLoader = loader => ({
 const setData = data => ({
     type: constants.DATA,
     data,
+});
+
+const setInscritoList = inscrito_list => ({
+    type: constants.INSCRITO_EVENTOS,
+    inscrito_list,
+});
+
+const setUserTalleres = user_talleres => ({
+    type: constants.USER_TALLERES,
+    user_talleres,
+});
+
+const setUserEventos = user_eventos => ({
+    type: constants.USER_EVENTOS,
+    user_eventos,
 });
 
 const appendData = data => ({
@@ -93,6 +111,10 @@ export const loadFormData = (data) => (dispatch) => {
     dispatch(initializeForm(formName, data))
 }
 
+export const loadFormDataAny = (form, data) => (dispatch) => {
+    dispatch(initializeForm(form, data))
+}
+
 export const listar = (page = 1, date_range=null, categoria="", append=false) => (dispatch, getStore) => {
     const config = {
         headers: getRequestHeaders()
@@ -115,6 +137,20 @@ export const listar = (page = 1, date_range=null, categoria="", append=false) =>
         dispatch(setLoader(false));
     });
 };
+export const listarEventosInscrito = () => (dispatch, getStore) => {
+    const config = {
+        headers: getRequestHeaders()
+    }
+    dispatch(setLoader(true));
+    axios.get(`${base_url}/evento/mis_eventos/`, config).then(response => {
+        dispatch(setInscritoList(response.data))
+    }).catch(() => {
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+};
+
+
 
 export const listUserEvents = (page = 1, admin, date_range=null, categoria="", append=false) => (dispatch, getStore) => {
     const config = {
@@ -205,8 +241,23 @@ export const crear = (data, attachments) => (dispatch) => {
         dispatch(setLoader(false));
     });
 };
+export const crearTaller = (evento, data) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/evento/${evento}/agregar_talleres/`, data, config).then(() => {
+        NotificationManager.success('Registro creado', 'Éxito', 3000);
+        dispatch(leer(evento));
+        dispatch(initializeForm("TallerForm", {}));
+    }).catch(() => {
+        NotificationManager.error('Error en la creación', 'ERROR');
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+};
 
-export const editar = (id, data, attachments) => (dispatch) => {
+export const editarEvento = (id, data, attachments) => (dispatch) => {
     dispatch(setLoader(true));
     let formData = new FormData();
     attachments.forEach((attachment) => {
@@ -216,7 +267,7 @@ export const editar = (id, data, attachments) => (dispatch) => {
     const config = {
         headers: getRequestHeaders("multipart")
     }
-    axios.put(`${base_url}/${endpoint}/${id}`, formData, config).then(() => {
+    axios.put(`${base_url}/${endpoint}/${id}/`, formData, config).then(() => {
         NotificationManager.success('Registro actualizado', 'Éxito', 3000);
     }).catch(() => {
         NotificationManager.error('Error en la edición', 'ERROR', 0);
@@ -231,7 +282,22 @@ export const eliminar = id => (dispatch) => {
         headers: getRequestHeaders()
     }
     axios.delete(`${base_url}/${endpoint}/${id}`, config).then(() => {
-        dispatch(listar());
+        NotificationManager.success('Registro eliminado', 'Éxito', 3000);
+        dispatch(push("/mis-eventos"));
+    }).catch(() => {
+        NotificationManager.error('Error en la transacción', 'Éxito', 3000);
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+};
+
+export const eliminarTaller = (evento, taller) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.delete(`${base_url}/evento/${evento}/taller/${taller}/`, config).then(() => {
+        dispatch(leer(evento))
         NotificationManager.success('Registro eliminado', 'Éxito', 3000);
     }).catch(() => {
         NotificationManager.success('Error en la transacción', 'Éxito', 3000);
@@ -239,6 +305,111 @@ export const eliminar = id => (dispatch) => {
         dispatch(setLoader(false));
     });
 };
+
+export const getUserTalleres = () => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.get(`${base_url}/evento/get_user_talleres/`, config).then(response => {
+        dispatch(setUserTalleres(response.data))
+    }).catch(() => {
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
+
+export const getUserEventos = () => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.get(`${base_url}/evento/get_user_eventos/`, config).then(response => {
+        dispatch(setUserEventos(response.data))
+    }).catch(() => {
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
+
+export const inscribirseEvento = (evento) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/evento/${evento}/registro/`,{}, config).then(response => {
+        dispatch(leer(evento))
+        dispatch(getUserEventos())
+        NotificationManager.success('Inscripcion realizada con exito', 'Éxito', 3000);
+    }).catch((err) => {
+        if(!!err.response.data.detail){
+            NotificationManager.error(err.response.data.detail, 'Error', 3000);
+        } else {
+            NotificationManager.error("Error en la inscripción", 'Error', 3000);
+        }
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
+
+export const inscribirseTaller = (evento, taller) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/evento/${evento}/taller/${taller}/registro/`,{}, config).then(response => {
+        dispatch(getUserTalleres())
+        NotificationManager.success('Inscripcion realizada con exito', 'Éxito', 3000);
+    }).catch((err) => {
+        if(!!err.response.data.detail){
+            NotificationManager.error(err.response.data.detail, 'Error', 3000);
+        } else {
+            NotificationManager.error("Error en la inscripción", 'Error', 3000);
+        }
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
+
+export const bajaEvento = (evento) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/evento/${evento}/darse_de_baja/`,{}, config).then(response => {
+        dispatch(leer(evento))
+        dispatch(getUserEventos())
+        dispatch(getUserTalleres())
+        NotificationManager.success('inscripcion cancelada realizada con exito', 'Éxito', 3000);
+    }).catch((err) => {
+        if(!!err.response.data.detail){
+            NotificationManager.error(err.response.data.detail, 'Error', 3000);
+        } else {
+            NotificationManager.error("Error en la inscripción", 'Error', 3000);
+        }
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
+
+export const bajaTaller = (evento, taller) => (dispatch) => {
+    dispatch(setLoader(true));
+    const config = {
+        headers: getRequestHeaders()
+    }
+    axios.post(`${base_url}/evento/${evento}/taller/${taller}/darse_de_baja/`,{}, config).then(response => {
+        dispatch(getUserTalleres())
+        NotificationManager.success('inscripcion cancelada realizada con exito', 'Éxito', 3000);
+    }).catch((err) => {
+        if(!!err.response.data.detail){
+            NotificationManager.error(err.response.data.detail, 'Error', 3000);
+        } else {
+            NotificationManager.error("Error en la inscripción", 'Error', 3000);
+        }
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+}
 
 export const searchChange = search => (dispatch) => {
     dispatch(setSearch(search));
@@ -263,14 +434,20 @@ export const actions = {
     listar,
     listUserEvents,
     listarHoy,
+    listarEventosInscrito,
+    getUserEventos,
+    getUserTalleres,
     changeFormValue,
     loadFormData,
+    loadFormDataAny,
     clearFilters,
     setTalleresValue,
     leer,
     crear,
-    editar,
+    crearTaller,
+    editarEvento,
     eliminar,
+    eliminarTaller,
     searchChange,
     onSortChange,
     onPageChange,
@@ -291,6 +468,24 @@ const reducers = {
         return {
             ...state,
             data
+        };
+    },
+    [constants.INSCRITO_EVENTOS]: (state, {inscrito_list}) => {
+        return {
+            ...state,
+            inscrito_list
+        };
+    },
+    [constants.USER_TALLERES]: (state, {user_talleres}) => {
+        return {
+            ...state,
+            user_talleres
+        };
+    },
+    [constants.USER_EVENTOS]: (state, {user_eventos}) => {
+        return {
+            ...state,
+            user_eventos
         };
     },
     [constants.TALLERES]: (state, {talleres}) => {
@@ -352,6 +547,9 @@ const initialState = {
     talleres: {
         results:[]
     },
+    inscrito_list:[],
+    user_talleres:[],
+    user_eventos:[],
     item: {},
     page: 1,
     ordering: '',
