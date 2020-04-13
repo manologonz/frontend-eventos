@@ -1,7 +1,4 @@
 import React from 'react';
-import moment from "moment";
-import {monthArray} from "../../../../utility/variables";
-import {Link} from "react-router-dom";
 import EventoCard from "../extra-components/EventoCard/EventoCard";
 
 const AllEventosList = (props) => {

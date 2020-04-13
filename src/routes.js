@@ -18,6 +18,7 @@ import ListarEventosContainer from "./js/components/Evento/Listar"
 import UserEventsContainer from "./js/components/Evento/AdminEvents"
 import EventoEditarContainer from "./js/components/Evento/Editar"
 import UsuarioEditarContainer from "./js/components/Usuario/Editar"
+import UsuarioEventosContainer from "./js/components/Evento/EventosInscrito"
 require('./style/index.css');
 import "./style/custom_styles.css"
 
@@ -30,6 +31,7 @@ const Routes = (props) => (
                 <ProtectedRoute exact path="/eventos-list" component={ListarEventosContainer}/>
                 <ProtectedRoute exact path="/crear-evento" component={CrearEventoContainer} />
                 <ProtectedRoute exact path="/mis-eventos" component={UserEventsContainer} />
+                <ProtectedRoute exact path="/eventos-agregados" component={UsuarioEventosContainer} />
                 <ProtectedRoute exact path="/eventos/:id/editar" component={EventoEditarContainer} />
                 <ProtectedRoute exact path="/eventos/:id/detail" component={EventoDetalleContainer} />
                 <ProtectedRoute exact path="/user-profile" component={UsuarioEditarContainer} />

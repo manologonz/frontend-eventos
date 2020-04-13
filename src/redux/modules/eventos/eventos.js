@@ -28,6 +28,7 @@ const constants = {
     TALLERES: "EVENTOS_TALLERES_LIST",
     USER_TALLERES: "EVENTOS_USER_TALLERES_LIST",
     USER_EVENTOS: "EVENTOS_USER_EVENTOS_LIST",
+    INSCRITO_EVENTOS: "EVENTOS_INSCRITO_EVENTOS_LIST",
 };
 
 // -----------------------------------
@@ -42,6 +43,11 @@ const setLoader = loader => ({
 const setData = data => ({
     type: constants.DATA,
     data,
+});
+
+const setInscritoList = inscrito_list => ({
+    type: constants.INSCRITO_EVENTOS,
+    inscrito_list,
 });
 
 const setUserTalleres = user_talleres => ({
@@ -131,6 +137,20 @@ export const listar = (page = 1, date_range=null, categoria="", append=false) =>
         dispatch(setLoader(false));
     });
 };
+export const listarEventosInscrito = () => (dispatch, getStore) => {
+    const config = {
+        headers: getRequestHeaders()
+    }
+    dispatch(setLoader(true));
+    axios.get(`${base_url}/evento/mis_eventos/`, config).then(response => {
+        dispatch(setInscritoList(response.data))
+    }).catch(() => {
+    }).finally(() => {
+        dispatch(setLoader(false));
+    });
+};
+
+
 
 export const listUserEvents = (page = 1, admin, date_range=null, categoria="", append=false) => (dispatch, getStore) => {
     const config = {
@@ -413,6 +433,7 @@ export const actions = {
     listar,
     listUserEvents,
     listarHoy,
+    listarEventosInscrito,
     getUserEventos,
     getUserTalleres,
     changeFormValue,
@@ -446,6 +467,12 @@ const reducers = {
         return {
             ...state,
             data
+        };
+    },
+    [constants.INSCRITO_EVENTOS]: (state, {inscrito_list}) => {
+        return {
+            ...state,
+            inscrito_list
         };
     },
     [constants.USER_TALLERES]: (state, {user_talleres}) => {
@@ -519,6 +546,7 @@ const initialState = {
     talleres: {
         results:[]
     },
+    inscrito_list:[],
     user_talleres:[],
     user_eventos:[],
     item: {},
