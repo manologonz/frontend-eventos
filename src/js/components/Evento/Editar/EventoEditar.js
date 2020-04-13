@@ -25,7 +25,7 @@ class EventoEditar extends Component {
     }
 
     static propTypes = {
-        editar: PropTypes.func.isRequired,
+        editarEvento: PropTypes.func.isRequired,
     };
 
     handleEventoSubmit = (data) => {

@@ -15,6 +15,15 @@ GLOBAL
     color: var(--main-color);
 }
 
+.image-evento {
+    max-height: 300px;
+    max-width: 600px;
+}
+
+.clr-primary{
+    color: var(--main-color);
+}
+
 .main-content-container{
     margin-top: 80px !important;
 }

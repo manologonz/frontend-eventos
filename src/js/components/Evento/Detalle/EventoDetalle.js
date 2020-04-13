@@ -9,7 +9,7 @@ import eventos from "../../../../redux/modules/eventos/eventos";
 class EventoDetalle extends Component {
 
     componentDidMount() {
-        const {leer,getUserEventos, getUserTalleres, match} = this.props
+        const {leer, getUserEventos, getUserTalleres, match} = this.props
         getUserEventos()
         getUserTalleres()
         leer(match.params.id)
@@ -19,9 +19,9 @@ class EventoDetalle extends Component {
         const {user_eventos} = this.props
         const eventoId = parseInt(this.props.match.params.id);
         let encontrado = false
-        if(!!user_eventos) {
+        if (!!user_eventos) {
             user_eventos.forEach((registro) => {
-                if(registro.reg_evento === eventoId){
+                if (registro.reg_evento === eventoId) {
                     encontrado = true
                 }
             })
@@ -31,9 +31,9 @@ class EventoDetalle extends Component {
     isTallerAgregado = (id) => {
         const {user_talleres} = this.props
         let encontrado = false
-        if(!!user_talleres) {
+        if (!!user_talleres) {
             user_talleres.forEach((registro) => {
-                if(registro.reg_taller === id){
+                if (registro.reg_taller === id) {
                     encontrado = true
                 }
             })
@@ -42,22 +42,22 @@ class EventoDetalle extends Component {
     }
 
     handleInscripcionEvento = () => {
-        const { inscribirseEvento, match, getUserEventos, getUserTalleres } = this.props
+        const {inscribirseEvento, match, getUserEventos, getUserTalleres} = this.props
         inscribirseEvento(match.params.id)
     }
     handleBajaEvento = () => {
-        const { bajaEvento, match, getUserEventos, getUserTalleres } = this.props
+        const {bajaEvento, match, getUserEventos, getUserTalleres} = this.props
         bajaEvento(match.params.id)
     }
 
-    handleInscripcionTaller  = (id) => {
-        const { inscribirseTaller, match } = this.props;
+    handleInscripcionTaller = (id) => {
+        const {inscribirseTaller, match} = this.props;
         return () => {
             inscribirseTaller(match.params.id, id)
         }
     }
-    handleBajaTaller  = (id) => {
-        const { bajaTaller, match } = this.props;
+    handleBajaTaller = (id) => {
+        const {bajaTaller, match} = this.props;
         return () => {
             bajaTaller(match.params.id, id)
         }
@@ -89,15 +89,30 @@ class EventoDetalle extends Component {
                             }
                         </div>
                         <hr/>
-                        <div className="content pl-2">
-                            <p>Lugar: {item.lugar}</p>
-                            <p>Fecha: {moment(item.fecha, "YYYY-MM-DD").format("DD/MM/YYYY")}</p>
-                            <p>Hora: {moment(item.fecha + ' ' + item.hora).format("HH:mm")}</p>
-                            <p>Cupos disponibles: {item.cupos_restantes}</p>
-                            <p>Categoria: {!!item.categoria ? item.categoria.nombre : "Sin categoria"}</p>
-                            <p className="mb-1">Descripcion: </p>
-                            <div>
-                                <p>{item.descripcion}</p>
+                        <div className="d-flex">
+                            <div className="col-md-3">
+                                <div className="content pl-2">
+                                    <p>Lugar: {item.lugar}</p>
+                                    <p>Fecha: {moment(item.fecha, "YYYY-MM-DD").format("DD/MM/YYYY")}</p>
+                                    <p>Hora: {moment(item.fecha + ' ' + item.hora).format("HH:mm")}</p>
+                                    <p>Cupos disponibles: {item.cupos_restantes}</p>
+                                    <p>Categoria: {!!item.categoria ? item.categoria.nombre : "Sin categoria"}</p>
+                                    <p className="mb-1">Descripcion: </p>
+                                    <div>
+                                        <p>{item.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-8 justify-content-center d-flex align-items-center">
+                                    {
+                                        (!!item.imagen_evento) ? (
+                                            <div className="col-md-6">
+                                            <img className="image-evento" alt="poster de evento" src={item.imagen_evento}/>
+                                            </div>
+                                        ) : (
+                                            <p className="make-bold">No image</p>
+                                        )
+                                    }
                             </div>
                         </div>
                         <div className="d-flex justify-content-between">

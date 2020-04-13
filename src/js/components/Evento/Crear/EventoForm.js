@@ -33,29 +33,29 @@ const EventoForm = (props) => {
                             name="titulo"
                             component={renderField}
                             type="text"
-                            placeholder="¿Como se llama tu evento?"/>
+                            placeholder="¿Cómo se llama tu evento?"/>
                     </div>
                     <div className="col-md-12 d-flex mt-3">
                         <div className="col-md-6 pl-0">
                             <label htmlFor="limite_participantes_evento" className="m-0 pr-2">
-                                Limite participantes<span className="required-field">*</span>
+                                Límite participantes<span className="required-field">*</span>
                             </label>
                             <Field
                                 name="limite_participantes_evento"
                                 component={renderNumber}
                                 type="number"
-                                placeholder="¿Cuantas personas pueden asistir?"
+                                placeholder="¿Cuántas personas pueden asistir?"
                             />
                         </div>
                         <div className="col-md-6 pr-0">
                             <label htmlFor="limite_participantes_talleres" className="m-0 pr-2">
-                                Limite talleres<span className="required-field">*</span>
+                                Límite talleres<span className="required-field">*</span>
                             </label>
                             <Field
                                 name="limite_participantes_talleres"
                                 component={renderNumber}
                                 type="number"
-                                placeholder="¿Cuantos talleres se pueden asignar?"
+                                placeholder="¿Cuántos talleres se pueden asignar?"
                             />
                         </div>
                     </div>
@@ -69,7 +69,7 @@ const EventoForm = (props) => {
                                 isClearable={true}
                                 component={AsyncSelectField}
                                 loadOptions={getCategorias}
-                                placeholder="¿Cual es la tematica?"
+                                placeholder="¿Cuál es la temática?"
                                 getOptionLabel={(option) => (option["nombre"])}
                                 getOptionValue={(option) => (option["id"])}
                             />
@@ -91,7 +91,7 @@ const EventoForm = (props) => {
                             <Field
                                 name="fecha"
                                 component={renderDayPicker}
-                                placeholder="¿En donde se va a realizar?"
+                                placeholder="¿En dónde se va a realizar?"
                             />
                         </div>
                         <div className="col-md-6 pr-0">
@@ -102,7 +102,7 @@ const EventoForm = (props) => {
                             <Field
                                 name="hora"
                                 component={renderField}
-                                placeholder="¿En donde se va a realizar?"
+                                placeholder="HH:mm (24hrs)"
                             />
                         </div>
                     </div>
@@ -127,7 +127,7 @@ const EventoForm = (props) => {
                             name="descripcion"
                             component={renderTextArea}
                             type="text"
-                            placeholder="Cuentanos un poco sobre la dinamica del evento."
+                            placeholder="Cuéntanos un poco sobre la dinámica del evento."
                         />
                     </div>
                     <div className="col-md-12 mt-3">
@@ -153,7 +153,7 @@ const EventoForm = (props) => {
                             name="nombre"
                             component={renderField}
                             type="text"
-                            placeholder="¿Sobre que trata el taller?"
+                            placeholder="¿Sobre qué trata el taller?"
                         />
                     </div>
                     <div className="col-md-12 mt-3">
@@ -164,7 +164,7 @@ const EventoForm = (props) => {
                             name="capacitador"
                             component={renderField}
                             type="text"
-                            placeholder="¿Quien impartira el taller?"
+                            placeholder="¿Quién impartirá el taller?"
                         />
                     </div>
                     <div className="col-md-12 mt-3">

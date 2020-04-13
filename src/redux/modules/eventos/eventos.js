@@ -379,6 +379,7 @@ export const bajaEvento = (evento) => (dispatch) => {
     axios.post(`${base_url}/evento/${evento}/darse_de_baja/`,{}, config).then(response => {
         dispatch(leer(evento))
         dispatch(getUserEventos())
+        dispatch(getUserTalleres())
         NotificationManager.success('inscripcion cancelada realizada con exito', 'Éxito', 3000);
     }).catch((err) => {
         if(!!err.response.data.detail){

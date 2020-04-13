@@ -31,7 +31,7 @@ export const loadFormData = (data) => (dispatch) => {
 export const registrar = (data = {}) => (dispatch) => {
     dispatch(setLoader(true));
     axios.post(`${base_url}/user/`, data).then(() => {
-        dispatch(initializeForm("registro", data))
+        dispatch(initializeForm("registro", {}))
         NotificationManager.success('Cuenta creada con éxito, puedes iniciar sesión', 'Éxito', 3000);
     }).catch(() => {
         NotificationManager.error('Vuelva a intentar', 'ERROR', 0);

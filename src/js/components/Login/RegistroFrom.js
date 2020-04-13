@@ -22,13 +22,12 @@ const RegistroForm = (props) => {
             <div className="form-group has-feedback">
                 <label htmlFor="email">Correo electronico</label>
                 <Field name="email" label="Correo electronico"
-                       component={renderField} type="text" className="form-control" />
+                       component={renderField} type="email" className="form-control" />
             </div>
             <div className="form-group has-feedback">
                 <label htmlFor="password">Contraseña</label>
                 <Field
                     name="password"
-                    label="Contraseña"
                     component={renderField}
                     type="password"
                     className="form-control"
@@ -38,7 +37,6 @@ const RegistroForm = (props) => {
                 <label htmlFor="password">Confirmar contraseña</label>
                 <Field
                     name="confirm_password"
-                    label="Confirmar Contraseña"
                     component={renderField}
                     type="password"
                     className="form-control"
@@ -59,15 +57,19 @@ export default reduxForm({
     form: 'registro', // a unique identifier for this form
 
     validate: (data) => {
+        let email = null;
+        if (data.email) {
+            email = validators.regex(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)('Debe ser un correo válido');
+        }
         return validate(data, {
             username: validators.exists()('Este campo es requerido'),
             first_name: validators.exists()('Este campo es requerido'),
             last_name: validators.exists()('Este campo es requerido'),
-            email: validators.exists()('Este campo es requerido'),
+            email: combine(validators.exists()('Este campo es requerido'), email),
             password: validators.exists()('Este campo es requerido'),
-            confirmPassword: combine(
+            confirm_password: combine(
                 validators.exists()('Este campo es requerido'),
-                matchPassword(data.password, data.confirmPassword)()('Las contraseñas no coinciden')
+                matchPassword(data.password, data.confirm_password)()('Las contraseñas no coinciden')
             ),
         });
     },

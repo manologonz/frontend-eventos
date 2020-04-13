@@ -17,7 +17,6 @@ class Login extends Component {
     hanldeRegistrar = (data) => {
         const {loadFormData, registrar} = this.props
         registrar(data)
-        loadFormData({})
     }
 
 
