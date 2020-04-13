@@ -176,7 +176,9 @@ TABS
 }
 
 .tab-list-item {
-    background-color: #b6b6b6;
+    background-color: #01757b;
+    font-weight: bold;
+    color: white;
     display: inline-block;
     width: 50%;
     list-style: none;
@@ -188,7 +190,7 @@ TABS
 }
 
 .tab-list-active {
-    background-color: white;
+    background-color: var(--main-color);
     border-width: 1px 1px 0 1px;
 }
 /*
