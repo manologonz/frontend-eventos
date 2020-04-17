@@ -78,6 +78,7 @@ class EventoEditar extends Component {
     render() {
         const { loader, imagen_evento, talleres, eliminar } = this.props;
         const { open } = this.state;
+        console.log(talleres);
         return (
             <div className="main-section">
                 <LoadMask loading={loader} type={"ThreeDots"} blur>

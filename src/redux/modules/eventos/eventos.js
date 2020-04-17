@@ -193,7 +193,7 @@ export const leer = (id, write=false) => (dispatch) => {
     const config = {
         headers: getRequestHeaders()
     }
-    axios.get(`${base_url}/${endpoint}/${id}`, config).then(response => {
+    axios.get(`${base_url}/${endpoint}/${id}/`, config).then(response => {
         const talleres = {
             results:[]
         }
@@ -294,12 +294,13 @@ export const eliminar = id => (dispatch) => {
 export const eliminarTaller = (evento, taller) => (dispatch) => {
     dispatch(setLoader(true));
     const config = {
-        headers: getRequestHeaders()
+        headers: getRequestHeaders("delete")
     }
-    axios.delete(`${base_url}/evento/${evento}/taller/${taller}/`, config).then(() => {
+    console.log(config);
+    axios.delete(`${base_url}/evento/${evento}/taller/${taller}/`,config).then(response => {
         dispatch(leer(evento))
         NotificationManager.success('Registro eliminado', 'Éxito', 3000);
-    }).catch(() => {
+    }).catch(err => {
         NotificationManager.success('Error en la transacción', 'Éxito', 3000);
     }).finally(() => {
         dispatch(setLoader(false));
