@@ -16,7 +16,7 @@
 }
 
 .login-container {
-    height: 80vh;:
+    padding: 20px !important;
     min-height: 80vh;
     display: flex;
 }

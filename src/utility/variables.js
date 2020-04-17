@@ -9,9 +9,13 @@ const dataTypes = {
 
 export const getRequestHeaders = (type="json") => {
     const token = localStorage.getItem("token");
-    const baseHeaders ={
+    let baseHeaders ={
         "Content-type": dataTypes[type]
     }
+    if(type === "delete"){
+        baseHeaders = {}
+    }
+
     if(!!token)
         return {
             ...baseHeaders,
